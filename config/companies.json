@@ -1,20 +1,68 @@
 {
   "companies": [
     {
-      "company": "Example Greenhouse Company",
-      "source": "greenhouse",
-      "identifier": "replace-with-board-token",
-      "enabled": false,
+      "company": "Arcadia",
+      "source": "lever",
+      "identifier": "arcadia",
+      "enabled": true,
       "priority": "tier-1",
-      "notes": "Enable only after verifying the public Greenhouse board token from the employer's official careers page."
+      "notes": "Verified from a current remote USA Implementation Manager posting. Strong direct fit; published salary range observed at $100,000–$135,000."
     },
     {
-      "company": "Example Lever Company",
+      "company": "Swiftly",
       "source": "lever",
-      "identifier": "replace-with-lever-site",
-      "enabled": false,
+      "identifier": "goswift",
+      "enabled": true,
       "priority": "tier-1",
-      "notes": "Enable only after verifying the public Lever site identifier from the employer's official careers page."
+      "notes": "Verified from a current remote Implementation Manager (SaaS) posting. Strong implementation, customer delivery, and operational coordination fit."
+    },
+    {
+      "company": "Vida Health",
+      "source": "lever",
+      "identifier": "vida",
+      "enabled": true,
+      "priority": "tier-1",
+      "notes": "Verified from a current United States remote Growth Operations Program Manager posting. Florida is not among the listed excluded states."
+    },
+    {
+      "company": "Rover",
+      "source": "lever",
+      "identifier": "rover",
+      "enabled": true,
+      "priority": "tier-1",
+      "notes": "Verified from a current Manager I, Content Program Management posting. Role aligns with knowledge operations and explicitly lists Florida as eligible."
+    },
+    {
+      "company": "Sure",
+      "source": "lever",
+      "identifier": "sure",
+      "enabled": true,
+      "priority": "tier-1",
+      "notes": "Verified from the current employer board, which includes a remote Product Implementation Manager opening."
+    },
+    {
+      "company": "BAMKO",
+      "source": "lever",
+      "identifier": "bamko",
+      "enabled": true,
+      "priority": "tier-1",
+      "notes": "Verified from the current employer board, which includes a remote full-time Implementation Manager opening."
+    },
+    {
+      "company": "Arbital Health",
+      "source": "lever",
+      "identifier": "arbitalhealth",
+      "enabled": true,
+      "priority": "tier-2",
+      "notes": "Verified from a current remote Technical Implementation Manager posting. Healthcare and data-domain requirements require closer qualification review."
+    },
+    {
+      "company": "Agile Defense",
+      "source": "lever",
+      "identifier": "agile-defense",
+      "enabled": true,
+      "priority": "tier-2",
+      "notes": "Verified from the current employer board. Includes Florida program-management and remote operations roles; federal-sector credentials may be required for some positions."
     }
   ]
 }
