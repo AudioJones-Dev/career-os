@@ -10,6 +10,12 @@ on:
         type: string
   schedule:
     - cron: "15 12 * * 1-5"
+  push:
+    branches:
+      - main
+    paths:
+      - config/companies.json
+      - .github/workflows/opportunity-scan.yml
 
 permissions:
   contents: read
