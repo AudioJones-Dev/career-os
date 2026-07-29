@@ -1,0 +1,101 @@
+name: opportunity-scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: Registry file to scan
+        required: false
+        default: config/companies.json
+        type: string
+  schedule:
+    - cron: "15 12 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: opportunity-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Career OS
+        run: python -m pip install --upgrade pip && python -m pip install -e .
+
+      - name: Resolve registry
+        id: registry
+        shell: bash
+        run: |
+          registry="${{ github.event.inputs.registry || 'config/companies.json' }}"
+          if [[ ! -f "$registry" ]]; then
+            echo "Registry not found: $registry" >&2
+            exit 1
+          fi
+          echo "path=$registry" >> "$GITHUB_OUTPUT"
+
+      - name: Run opportunity scan
+        run: |
+          mkdir -p applications/scan-results
+          career-os batch "${{ steps.registry.outputs.path }}" \
+            --output applications/scan-results/ranked-opportunities.csv \
+            --errors applications/scan-results/ingestion-errors.log
+
+      - name: Write scan metadata
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p applications/scan-results
+          {
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "run_number=${GITHUB_RUN_NUMBER}"
+            echo "commit=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "registry=${{ steps.registry.outputs.path }}"
+            echo "generated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > applications/scan-results/scan-metadata.txt
+
+      - name: Summarize results
+        if: always()
+        shell: bash
+        run: |
+          echo "## Career OS Opportunity Scan" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f applications/scan-results/ranked-opportunities.csv ]]; then
+            count=$(($(wc -l < applications/scan-results/ranked-opportunities.csv) - 1))
+            if (( count < 0 )); then count=0; fi
+            echo "- Ranked opportunities: $count" >> "$GITHUB_STEP_SUMMARY"
+            echo "- Registry: ${{ steps.registry.outputs.path }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "### Top results" >> "$GITHUB_STEP_SUMMARY"
+            echo '```csv' >> "$GITHUB_STEP_SUMMARY"
+            head -n 11 applications/scan-results/ranked-opportunities.csv >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Ranked output was not produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -s applications/scan-results/ingestion-errors.log ]]; then
+            echo "- Some sources failed; inspect the uploaded error log." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload scan artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: career-opportunity-scan-${{ github.run_number }}
+          path: applications/scan-results/
+          if-no-files-found: error
+          retention-days: 30
