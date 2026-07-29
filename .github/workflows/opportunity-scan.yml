@@ -54,11 +54,18 @@ jobs:
           echo "path=$registry" >> "$GITHUB_OUTPUT"
 
       - name: Run opportunity scan
+        id: scan
+        continue-on-error: true
+        shell: bash
         run: |
           mkdir -p applications/scan-results
+          set +e
           career-os batch "${{ steps.registry.outputs.path }}" \
             --output applications/scan-results/ranked-opportunities.csv \
             --errors applications/scan-results/ingestion-errors.log
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          exit "$exit_code"
 
       - name: Write scan metadata
         if: always()
@@ -71,6 +78,8 @@ jobs:
             echo "commit=${GITHUB_SHA}"
             echo "ref=${GITHUB_REF}"
             echo "registry=${{ steps.registry.outputs.path }}"
+            echo "scan_outcome=${{ steps.scan.outcome }}"
+            echo "scan_exit_code=${{ steps.scan.outputs.exit_code || 'unknown' }}"
             echo "generated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } > applications/scan-results/scan-metadata.txt
 
@@ -80,6 +89,8 @@ jobs:
         run: |
           echo "## Career OS Opportunity Scan" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Scan outcome: ${{ steps.scan.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Scan exit code: ${{ steps.scan.outputs.exit_code || 'unknown' }}" >> "$GITHUB_STEP_SUMMARY"
           if [[ -f applications/scan-results/ranked-opportunities.csv ]]; then
             count=$(($(wc -l < applications/scan-results/ranked-opportunities.csv) - 1))
             if (( count < 0 )); then count=0; fi
@@ -94,7 +105,7 @@ jobs:
             echo "- Ranked output was not produced." >> "$GITHUB_STEP_SUMMARY"
           fi
           if [[ -s applications/scan-results/ingestion-errors.log ]]; then
-            echo "- Some sources failed; inspect the uploaded error log." >> "$GITHUB_STEP_SUMMARY"
+            echo "- Some sources failed; inspect the published error log." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload scan artifacts
@@ -107,7 +118,7 @@ jobs:
           retention-days: 30
 
       - name: Publish latest results branch
-        if: success()
+        if: always()
         shell: bash
         run: |
           publish_dir="$(mktemp -d)"
@@ -127,7 +138,12 @@ jobs:
           git add latest
           if git diff --cached --quiet; then
             echo "No scan result changes to publish."
-            exit 0
+          else
+            git commit -m "Publish latest opportunity scan diagnostics"
+            git push origin scan-results
           fi
-          git commit -m "Publish latest opportunity scan"
-          git push origin scan-results
+
+      - name: Fail workflow when scan failed
+        if: steps.scan.outcome == 'failure'
+        shell: bash
+        run: exit 1
