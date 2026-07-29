@@ -18,7 +18,7 @@ on:
       - .github/workflows/opportunity-scan.yml
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: opportunity-scan
@@ -105,3 +105,29 @@ jobs:
           path: applications/scan-results/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish latest results branch
+        if: success()
+        shell: bash
+        run: |
+          publish_dir="$(mktemp -d)"
+          cp -R applications/scan-results/. "$publish_dir/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin scan-results:scan-results || true
+          if git show-ref --verify --quiet refs/heads/scan-results; then
+            git switch scan-results
+          else
+            git switch --orphan scan-results
+            git rm -rf .
+          fi
+          mkdir -p latest
+          rm -rf latest/*
+          cp -R "$publish_dir"/. latest/
+          git add latest
+          if git diff --cached --quiet; then
+            echo "No scan result changes to publish."
+            exit 0
+          fi
+          git commit -m "Publish latest opportunity scan"
+          git push origin scan-results
