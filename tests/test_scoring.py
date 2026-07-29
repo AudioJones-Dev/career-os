@@ -29,3 +29,36 @@ def test_prioritizes_verified_high_fit_role() -> None:
     result = score_job(job)
     assert result.score >= 80
     assert result.decision == "priority"
+
+
+def test_routes_unknown_florida_eligibility_to_verification() -> None:
+    job = JobOpportunity(
+        source="test", source_id="4", title="Implementation Manager", company="Example", url="https://example.com/4",
+        remote_status="remote", florida_eligible=None, salary_min=105_000, salary_max=135_000,
+        description="Lead implementation, project management, workflow design, and stakeholder coordination.",
+    )
+    result = score_job(job)
+    assert result.decision == "verify"
+    assert "Florida eligibility is unknown." in result.gaps
+
+
+def test_routes_missing_compensation_to_verification() -> None:
+    job = JobOpportunity(
+        source="test", source_id="5", title="Implementation Manager", company="Example", url="https://example.com/5",
+        remote_status="remote", florida_eligible=True,
+        description="Lead implementation, CRM workflow, automation, and stakeholder management.",
+    )
+    result = score_job(job)
+    assert result.decision == "verify"
+    assert "Compensation is not published or verified." in result.gaps
+
+
+def test_routes_unclear_employment_type_to_verification() -> None:
+    job = JobOpportunity(
+        source="test", source_id="6", title="Program Manager", company="Example", url="https://example.com/6",
+        remote_status="remote", florida_eligible=True, employment_type="unknown",
+        salary_min=120_000, salary_max=145_000,
+    )
+    result = score_job(job)
+    assert result.decision == "verify"
+    assert "Role is not clearly full-time employment." in result.gaps

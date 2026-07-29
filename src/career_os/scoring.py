@@ -46,14 +46,18 @@ class ScoreResult:
 def score_job(job: JobOpportunity) -> ScoreResult:
     reasons: list[str] = []
     gaps: list[str] = []
+    verification_required = False
     text = f"{job.title} {job.description} {' '.join(job.requirements)}".lower()
 
     if job.florida_eligible is False:
         return ScoreResult(0, "reject", [], ["Remote role explicitly excludes Florida."])
     if job.salary_max is not None and job.salary_max < 90_000:
         return ScoreResult(0, "reject", [], ["Published salary ceiling is below $90,000."])
-    if job.employment_type.lower() not in {"full-time", "full time", "fte"}:
+
+    normalized_employment = job.employment_type.lower().strip()
+    if normalized_employment not in {"full-time", "full time", "fte"}:
         gaps.append("Role is not clearly full-time employment.")
+        verification_required = True
 
     score = 0
     normalized_title = job.title.lower().strip()
@@ -67,14 +71,17 @@ def score_job(job: JobOpportunity) -> ScoreResult:
     elif "remote" in job.location.lower():
         score += 10
         reasons.append("Remote indicated in location: +10; eligibility still requires verification.")
+        verification_required = True
     else:
         gaps.append("Remote status is not verified.")
+        verification_required = True
 
     if job.florida_eligible is True:
         score += 10
         reasons.append("Florida eligibility verified: +10.")
     else:
         gaps.append("Florida eligibility is unknown.")
+        verification_required = True
 
     if job.salary_min is not None:
         if job.salary_min >= 110_000:
@@ -89,8 +96,10 @@ def score_job(job: JobOpportunity) -> ScoreResult:
     elif job.salary_max is not None and job.salary_max >= 90_000:
         score += 6
         gaps.append("Only salary ceiling clears the target; base floor is unknown.")
+        verification_required = True
     else:
         gaps.append("Compensation is not published or verified.")
+        verification_required = True
 
     keyword_points = 0
     matched = []
@@ -108,7 +117,9 @@ def score_job(job: JobOpportunity) -> ScoreResult:
         gaps.append("Posting contains a likely hard credential barrier.")
 
     score = max(0, min(100, score))
-    if score >= 80:
+    if verification_required:
+        decision = "verify"
+    elif score >= 80:
         decision = "priority"
     elif score >= 70:
         decision = "apply"
