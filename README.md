@@ -6,9 +6,22 @@ It coordinates career positioning, job sourcing, opportunity scoring, tailored a
 
 ## Canonical Sources
 
-- Resume source of truth: https://github.com/AudioJones-Dev/Tyrone-Nelms-Resume
+- Resume and career-content source of truth: https://github.com/AudioJones-Dev/Tyrone-Nelms-Resume
 - LinkedIn: https://www.linkedin.com/in/audiojones
 - GitHub portfolio: https://github.com/AudioJones-Dev
+
+Career OS does not duplicate canonical resume content. Every tailored application must record the resume path and commit SHA used.
+
+## Evidence Repositories
+
+- AJ Digital OS V1: https://github.com/AudioJones-Dev/AJ-DIGITAL-OS-V1
+- HDIKIT: https://github.com/AudioJones-Dev/HDIKIT
+- Florida Ramp & Lift operational pilot: https://github.com/AudioJones-Dev/FRL-CONTRACTOR-PORTAL
+- Florida Ramp & Lift planning and governance foundation: https://github.com/AudioJones-Dev/florida-ramp-and-lift-ops
+- Founder Intelligence System: https://github.com/AudioJones-Dev/founder-intelligence-system
+- ResponseOS: https://github.com/AudioJones-Dev/responseos
+
+See `architecture/repository-boundaries.md` for ownership rules and maturity labels.
 
 ## Target Positioning
 
@@ -39,10 +52,13 @@ Primary target roles:
 
 1. Source verified openings from company career pages and reputable job platforms.
 2. Normalize title, employer, salary, location restrictions, responsibilities, and requirements.
-3. Score each opportunity against the career criteria in `strategy/opportunity-scoring.md`.
-4. Tailor the resume and supporting materials only for roles that clear the application threshold.
-5. Track submissions, follow-ups, interviews, outcomes, and evidence learned from the market.
-6. Update positioning based on observed response rates rather than assumptions.
+3. Score each opportunity against `strategy/opportunity-scoring.md`.
+4. Reject openings that fail salary, Florida eligibility, employment-type, or material qualification gates.
+5. Produce an application brief for each qualified opening.
+6. Tailor canonical resume content only for roles that clear the application threshold.
+7. Record the exact resume path and commit SHA used.
+8. Track submissions, follow-ups, interviews, outcomes, and evidence learned from the market.
+9. Update positioning based on observed response rates rather than assumptions.
 
 ## Evidence Standard
 
@@ -53,11 +69,13 @@ Career OS follows an explicit evidence policy:
 - **Unverified:** excluded from external applications until confirmed.
 - **Planned:** roadmap work; never represented as deployed or production-proven.
 
-## Initial Structure
+## Repository Structure
 
 ```text
 career-os/
 ├── README.md
+├── architecture/
+│   └── repository-boundaries.md
 ├── strategy/
 │   ├── search-strategy.md
 │   └── opportunity-scoring.md
@@ -73,4 +91,4 @@ career-os/
 
 ## Current Status
 
-Foundation initialized. The next implementation stage is the job-ingestion and scoring workflow, followed by Indeed/LinkedIn profile execution and application tracking.
+Foundation and repository contracts are initialized. The next implementation stage is job ingestion and normalization, followed by automated scoring, application-brief generation, and profile execution on Indeed and LinkedIn.
