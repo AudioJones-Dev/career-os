@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AudioJones-Dev/career-os/applications/application-record.schema.json",
+  "title": "Career OS Application Record",
+  "type": "object",
+  "required": [
+    "application_id",
+    "company",
+    "role_title",
+    "source_url",
+    "remote_status",
+    "florida_eligible",
+    "salary_status",
+    "stage",
+    "discovered_at"
+  ],
+  "properties": {
+    "application_id": {"type": "string"},
+    "company": {"type": "string"},
+    "role_title": {"type": "string"},
+    "source_url": {"type": "string", "format": "uri"},
+    "company_careers_url": {"type": ["string", "null"], "format": "uri"},
+    "source_platform": {"type": "string"},
+    "employment_type": {"type": "string"},
+    "remote_status": {
+      "enum": ["remote_us", "remote_restricted", "hybrid", "onsite", "unclear"]
+    },
+    "florida_eligible": {"type": ["boolean", "null"]},
+    "location_restrictions": {"type": "array", "items": {"type": "string"}},
+    "salary_min": {"type": ["number", "null"]},
+    "salary_max": {"type": ["number", "null"]},
+    "salary_currency": {"const": "USD"},
+    "salary_status": {
+      "enum": ["verified_above_floor", "verified_below_floor", "estimated", "undisclosed"]
+    },
+    "fit_score": {"type": ["integer", "null"], "minimum": 0, "maximum": 100},
+    "fit_rationale": {"type": "string"},
+    "proof_points": {"type": "array", "items": {"type": "string"}},
+    "gaps": {"type": "array", "items": {"type": "string"}},
+    "resume_repository": {"type": "string"},
+    "resume_path": {"type": ["string", "null"]},
+    "resume_commit_sha": {"type": ["string", "null"]},
+    "cover_letter_path": {"type": ["string", "null"]},
+    "stage": {
+      "enum": [
+        "discovered",
+        "screened_out",
+        "qualified",
+        "tailoring",
+        "ready_to_apply",
+        "applied",
+        "recruiter_screen",
+        "interview",
+        "final_interview",
+        "offer",
+        "rejected",
+        "withdrawn",
+        "closed"
+      ]
+    },
+    "discovered_at": {"type": "string", "format": "date-time"},
+    "applied_at": {"type": ["string", "null"], "format": "date-time"},
+    "next_action": {"type": ["string", "null"]},
+    "next_action_at": {"type": ["string", "null"], "format": "date-time"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}
