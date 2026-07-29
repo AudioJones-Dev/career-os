@@ -1,0 +1,20 @@
+{
+  "companies": [
+    {
+      "company": "Example Greenhouse Company",
+      "source": "greenhouse",
+      "identifier": "replace-with-board-token",
+      "enabled": false,
+      "priority": "tier-1",
+      "notes": "Enable only after verifying the public Greenhouse board token from the employer's official careers page."
+    },
+    {
+      "company": "Example Lever Company",
+      "source": "lever",
+      "identifier": "replace-with-lever-site",
+      "enabled": false,
+      "priority": "tier-1",
+      "notes": "Enable only after verifying the public Lever site identifier from the employer's official careers page."
+    }
+  ]
+}

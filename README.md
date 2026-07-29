@@ -27,19 +27,7 @@ See `architecture/repository-boundaries.md` for ownership rules and maturity lab
 
 **Operations & Business Systems Leader | Process Improvement | AI-Enabled Workflows | Program Delivery**
 
-Primary target roles:
-
-- Business Operations Manager
-- Operations Manager
-- Business Systems Manager
-- Implementation Manager
-- Program Manager
-- Customer Operations Manager
-- Service Operations Manager
-- Digital Transformation Manager
-- AI Operations Manager
-- Knowledge Operations Manager
-- Process Improvement Manager
+Primary target roles include Business Operations Manager, Operations Manager, Business Systems Manager, Implementation Manager, Program Manager, Customer Operations Manager, Service Operations Manager, Digital Transformation Manager, AI Operations Manager, Knowledge Operations Manager, and Process Improvement Manager.
 
 ## Compensation and Work Constraints
 
@@ -48,21 +36,52 @@ Primary target roles:
 - Geographic plan: Florida relocation flexibility, including Fort Myers, Cape Coral, and surrounding areas
 - Reject roles that are nominally remote but exclude Florida unless the role provides a viable relocation path
 
+## Installation
+
+```bash
+python -m pip install -e .
+python -m pytest
+```
+
+## Ingestion Commands
+
+Score an existing normalized file:
+
+```bash
+career-os file jobs.json --output applications/scored-opportunities.csv
+```
+
+Fetch one public ATS board:
+
+```bash
+career-os greenhouse <board-token> --company "Company Name"
+career-os lever <site> --company "Company Name"
+```
+
+Fetch all enabled employers in the registry, tolerate individual source failures, deduplicate results, rank them, and write a single queue:
+
+```bash
+career-os batch config/companies.json \
+  --output applications/ranked-opportunities.csv \
+  --errors applications/ingestion-errors.log
+```
+
+`config/companies.json` is intentionally conservative. A company entry should be enabled only after its public Greenhouse board token or Lever site identifier has been verified from the employer's official careers page.
+
 ## Operating Model
 
-1. Source verified openings from company career pages and reputable job platforms.
+1. Source verified openings from company career pages and permitted public ATS feeds.
 2. Normalize title, employer, salary, location restrictions, responsibilities, and requirements.
-3. Score each opportunity against `strategy/opportunity-scoring.md`.
-4. Reject openings that fail salary, Florida eligibility, employment-type, or material qualification gates.
-5. Produce an application brief for each qualified opening.
-6. Tailor canonical resume content only for roles that clear the application threshold.
-7. Record the exact resume path and commit SHA used.
-8. Track submissions, follow-ups, interviews, outcomes, and evidence learned from the market.
-9. Update positioning based on observed response rates rather than assumptions.
+3. Deduplicate listings using canonical posting URLs, retaining the more complete record.
+4. Score each opportunity against `strategy/opportunity-scoring.md`.
+5. Reject openings that fail salary, Florida eligibility, employment-type, or material qualification gates.
+6. Produce an application brief for each qualified opening.
+7. Tailor canonical resume content only for roles that clear the application threshold.
+8. Record the exact resume path and commit SHA used.
+9. Track submissions, follow-ups, interviews, outcomes, and evidence learned from the market.
+10. Update positioning based on observed response rates rather than assumptions.
 
 ## Evidence Standard
-
-Career OS follows an explicit evidence policy:
 
 - **Verified:** directly supported by a repository, credential, employment record, job posting, or measurable artifact.
 - **Inferred:** reasonable interpretation of verified evidence, clearly labeled.
@@ -74,6 +93,14 @@ Career OS follows an explicit evidence policy:
 ```text
 career-os/
 ├── README.md
+├── config/
+│   └── companies.json
+├── src/career_os/
+│   ├── adapters/
+│   ├── batch.py
+│   ├── cli.py
+│   ├── models.py
+│   └── scoring.py
 ├── architecture/
 │   └── repository-boundaries.md
 ├── strategy/
@@ -85,10 +112,11 @@ career-os/
 ├── templates/
 │   ├── application-brief.md
 │   └── interview-story.md
-└── evidence/
-    └── portfolio-index.md
+├── evidence/
+│   └── portfolio-index.md
+└── tests/
 ```
 
 ## Current Status
 
-Foundation and repository contracts are initialized. The next implementation stage is job ingestion and normalization, followed by automated scoring, application-brief generation, and profile execution on Indeed and LinkedIn.
+The ingestion and scoring core supports local files, Greenhouse, Lever, registry-driven batch collection, deduplication, ranked CSV output, and automated CI tests. The next stage is populating verified target-company identifiers and generating application briefs for qualified roles.

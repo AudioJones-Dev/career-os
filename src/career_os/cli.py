@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from .adapters import fetch_greenhouse_jobs, fetch_lever_jobs
+from .batch import collect_registered_jobs, load_company_registry
 from .models import JobOpportunity
 from .scoring import score_job
 
@@ -24,11 +25,14 @@ def write_scored(jobs: list[JobOpportunity], output: Path) -> None:
         "source", "source_id", "company", "title", "url", "location", "remote_status",
         "florida_eligible", "salary_min", "salary_max", "score", "decision", "reasons", "gaps",
     ]
+    ranked = sorted(
+        ((job, score_job(job)) for job in jobs),
+        key=lambda item: (-item[1].score, item[0].company.lower(), item[0].title.lower()),
+    )
     with output.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
-        for job in jobs:
-            result = score_job(job)
+        for job, result in ranked:
             writer.writerow({
                 "source": job.source, "source_id": job.source_id, "company": job.company,
                 "title": job.title, "url": job.url, "location": job.location,
@@ -37,6 +41,13 @@ def write_scored(jobs: list[JobOpportunity], output: Path) -> None:
                 "score": result.score, "decision": result.decision,
                 "reasons": " | ".join(result.reasons), "gaps": " | ".join(result.gaps),
             })
+
+
+def write_errors(errors: list[str], output: Path) -> None:
+    if not errors:
+        return
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text("\n".join(errors) + "\n", encoding="utf-8")
 
 
 def main() -> None:
@@ -57,16 +68,29 @@ def main() -> None:
     lever_cmd.add_argument("--company", required=True)
     lever_cmd.add_argument("--output", type=Path, default=Path("applications/lever-opportunities.csv"))
 
+    batch_cmd = sub.add_parser("batch", help="Fetch all enabled companies in a registry")
+    batch_cmd.add_argument("registry", type=Path, nargs="?", default=Path("config/companies.json"))
+    batch_cmd.add_argument("--output", type=Path, default=Path("applications/ranked-opportunities.csv"))
+    batch_cmd.add_argument("--errors", type=Path, default=Path("applications/ingestion-errors.log"))
+
     args = parser.parse_args()
+    errors: list[str] = []
     if args.command == "file":
         jobs = load_jobs(args.input)
     elif args.command == "greenhouse":
         jobs = fetch_greenhouse_jobs(args.board_token, args.company)
-    else:
+    elif args.command == "lever":
         jobs = fetch_lever_jobs(args.site, args.company)
+    else:
+        sources = load_company_registry(args.registry)
+        jobs, errors = collect_registered_jobs(sources)
 
     write_scored(jobs, args.output)
+    if errors:
+        write_errors(errors, args.errors)
     print(f"Scored {len(jobs)} opportunities -> {args.output}")
+    if errors:
+        print(f"Recorded {len(errors)} source errors -> {args.errors}")
 
 
 if __name__ == "__main__":
