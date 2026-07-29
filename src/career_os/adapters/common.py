@@ -8,7 +8,8 @@ from typing import Iterable
 _TAG_RE = re.compile(r"<[^>]+>")
 _SPACE_RE = re.compile(r"\s+")
 _SALARY_RANGE_RE = re.compile(
-    r"\$\s*(?P<low>\d{2,3}(?:,\d{3})?|\d{2,3})\s*(?:-|–|—|to)\s*\$?\s*(?P<high>\d{2,3}(?:,\d{3})?|\d{2,3})",
+    r"\$\s*(?P<low>\d{2,3}(?:,\d{3})?|\d{2,3})\s*(?P<low_k>[kK])?\s*"
+    r"(?:-|–|—|to)\s*\$?\s*(?P<high>\d{2,3}(?:,\d{3})?|\d{2,3})\s*(?P<high_k>[kK])?",
     re.IGNORECASE,
 )
 
@@ -41,10 +42,10 @@ def infer_florida_eligibility(location: str, text: str = "") -> bool | None:
     )
     if any(term in combined for term in exclusions):
         return False
-    if "united states" in combined or "u.s." in combined or "usa" in combined or "remote" in combined:
-        return None
     if "florida" in combined:
         return True
+    if "united states" in combined or "u.s." in combined or "usa" in combined or "remote" in combined:
+        return None
     return None
 
 
@@ -52,14 +53,14 @@ def extract_salary(text: str) -> tuple[int | None, int | None]:
     match = _SALARY_RANGE_RE.search(text)
     if not match:
         return None, None
-    low = _normalize_salary_number(match.group("low"))
-    high = _normalize_salary_number(match.group("high"))
+    low = _normalize_salary_number(match.group("low"), bool(match.group("low_k")))
+    high = _normalize_salary_number(match.group("high"), bool(match.group("high_k")))
     return low, high
 
 
-def _normalize_salary_number(raw: str) -> int:
+def _normalize_salary_number(raw: str, explicit_k: bool = False) -> int:
     value = int(raw.replace(",", ""))
-    return value * 1000 if value < 1000 else value
+    return value * 1000 if explicit_k or value < 1000 else value
 
 
 def flatten_parts(parts: Iterable[dict]) -> str:
