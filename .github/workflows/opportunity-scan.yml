@@ -64,6 +64,7 @@ jobs:
           set +e
           career-os batch "${{ steps.registry.outputs.path }}" \
             --output applications/scan-results/ranked-opportunities.csv \
+            --verification-output applications/scan-results/verification-results.csv \
             --errors applications/scan-results/ingestion-errors.log
           exit_code=$?
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
@@ -105,6 +106,11 @@ jobs:
             echo '```' >> "$GITHUB_STEP_SUMMARY"
           else
             echo "- Ranked output was not produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [[ -f applications/scan-results/verification-results.csv ]]; then
+            verify_count=$(($(wc -l < applications/scan-results/verification-results.csv) - 1))
+            if (( verify_count < 0 )); then verify_count=0; fi
+            echo "- Verification records: $verify_count" >> "$GITHUB_STEP_SUMMARY"
           fi
           if [[ -s applications/scan-results/ingestion-errors.log ]]; then
             echo "- Some sources failed; inspect the published error log." >> "$GITHUB_STEP_SUMMARY"
