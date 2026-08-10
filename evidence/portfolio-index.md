@@ -14,7 +14,7 @@ Repository: https://github.com/AudioJones-Dev/AJ-DIGITAL-OS-V1
 
 Repositories:
 
-- https://github.com/AudioJones-Dev/FRL-CONTRACTOR-PORTAL
+- Operational-pilot repository: private — walkthrough available
 - https://github.com/AudioJones-Dev/florida-ramp-and-lift-ops
 
 **Verified evidence:** operational pilot portal for installers, administrators, and client status views; React/TypeScript/Node/Supabase stack; job, contractor, billing-draft, field-image, safety, SOP, schema, and approval-gate design.
@@ -25,11 +25,21 @@ Repositories:
 
 ## HDIKIT
 
-Repository: https://github.com/AudioJones-Dev/HDIKIT
+Repository: private — walkthrough available
 
 **Verified evidence:** repo-native truth-state protocol for claim verification, false-confidence exposure, and preventing unverified assumptions from becoming action.
 
 **Use for:** AI governance, responsible AI, evidence management, decision traceability, knowledge operations, and risk controls.
+
+## VPL Flow
+
+Repository: private — specification walkthrough available
+
+**Verified evidence:** product requirements, operational workflow and SOP specifications, logical domain model, entity relationships, configuration revision controls, purchase-order and equipment identity, freight and package records, custody events, work orders, role permissions, approval gates, mismatch handling, auditability, and staged architecture governance.
+
+**Maturity distinction:** `specified`. The evidence supports requirements engineering and operations-system architecture. No application code, deployment, production operation, customer adoption, or measured business outcome is claimed.
+
+**Use for:** business analysis, requirements engineering, operational discovery, systems analysis, data and information modeling, role and permission design, workflow-state design, architectural decision-making, and technical stakeholder translation.
 
 ## Business Memory Architecture
 

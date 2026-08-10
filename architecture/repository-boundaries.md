@@ -44,9 +44,10 @@ Evidence repositories support specific portfolio claims.
 Current priority sources:
 
 - AJ Digital OS V1: https://github.com/AudioJones-Dev/AJ-DIGITAL-OS-V1
-- HDIKIT: https://github.com/AudioJones-Dev/HDIKIT
-- Florida Ramp & Lift operational pilot: https://github.com/AudioJones-Dev/FRL-CONTRACTOR-PORTAL
+- HDIKIT: private repository — walkthrough available
+- Florida Ramp & Lift operational pilot: private repository — walkthrough available
 - Florida Ramp & Lift planning and governance foundation: https://github.com/AudioJones-Dev/florida-ramp-and-lift-ops
+- VPL Flow specified operations architecture: private repository — walkthrough available; no application code or production claim
 - Founder Intelligence System: https://github.com/AudioJones-Dev/founder-intelligence-system
 - ResponseOS: https://github.com/AudioJones-Dev/responseos
 

@@ -15,9 +15,10 @@ Career OS does not duplicate canonical resume content. Every tailored applicatio
 ## Evidence Repositories
 
 - AJ Digital OS V1: https://github.com/AudioJones-Dev/AJ-DIGITAL-OS-V1
-- HDIKIT: https://github.com/AudioJones-Dev/HDIKIT
-- Florida Ramp & Lift operational pilot: https://github.com/AudioJones-Dev/FRL-CONTRACTOR-PORTAL
+- HDIKIT: private repository — walkthrough available
+- Florida Ramp & Lift operational pilot: private repository — walkthrough available
 - Florida Ramp & Lift planning and governance foundation: https://github.com/AudioJones-Dev/florida-ramp-and-lift-ops
+- VPL Flow specified operations architecture: private repository — walkthrough available; no application code or production claim
 - Founder Intelligence System: https://github.com/AudioJones-Dev/founder-intelligence-system
 - ResponseOS: https://github.com/AudioJones-Dev/responseos
 
@@ -25,9 +26,9 @@ See `architecture/repository-boundaries.md` for ownership rules and maturity lab
 
 ## Target Positioning
 
-**Operations & Business Systems Leader | Process Improvement | AI-Enabled Workflows | Program Delivery**
+**Operations & Business Systems Architect | Business Analysis | Requirements Engineering | Process Design | Systems Implementation | AI-Enabled Workflows**
 
-Primary target roles include Business Operations Manager, Operations Manager, Business Systems Manager, Implementation Manager, Program Manager, Customer Operations Manager, Service Operations Manager, Digital Transformation Manager, AI Operations Manager, Knowledge Operations Manager, and Process Improvement Manager.
+Primary target roles include Senior Business Systems Analyst, Business Systems Consultant, Business Systems Architect, Operations Systems Architect, Implementation Manager, Systems Implementation Lead, Solutions Consultant, Business Systems Manager, Business Operations Manager, Operations Manager, and Program Manager. Solutions Architect, AI Solutions Architect, and enterprise Business Architect remain evidence-dependent stretch titles rather than default search positioning.
 
 ## Compensation and Work Constraints
 
