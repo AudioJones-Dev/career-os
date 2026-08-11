@@ -1,8 +1,8 @@
-run_id=31394415690
-run_number=13
-commit=d6f1675c4040bdff0eeb8bbf1b9e180df2122bab
+run_id=31491531996
+run_number=14
+commit=981abddf312f90e7ed21836399a5fadb011cd5b4
 ref=refs/heads/main
 registry=config/companies.json
 scan_outcome=success
 scan_exit_code=0
-generated_at=2026-08-10T13:44:50Z
+generated_at=2026-08-11T12:30:40Z
