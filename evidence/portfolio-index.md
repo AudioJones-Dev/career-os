@@ -55,8 +55,36 @@ Repository: private — specification walkthrough available
 - Healthcare provider services and issue resolution
 - Shipping, receiving, order management, customer service, sales support, and office operations
 
+## Public Web Surfaces
+
+Live web properties are evidence in their own right, and they are also a leak path. Both are registered here. The registry of record is `docs/public-surfaces.md` in the Tyrone-Nelms-Resume repository; link selection for applications is governed by `strategy/portfolio-link-strategy.md`.
+
+### tyronenelms.com
+
+Surface: https://tyronenelms.com — maturity `production`
+
+**Verified evidence:** employer-facing portfolio presenting "Operations & Business Systems Architect" positioning, capability groupings for business analysis, process and systems design, systems implementation, and AI-enabled workflows, and featured case studies for Florida Ramp & Lift FieldOps, Career OS, and ARO. Observed 2026-08-11.
+
+**Use for:** the default portfolio link on every application. It demonstrates the positioning rather than asserting it, which is itself evidence of the systems-design capability being claimed.
+
+**Open item:** ARO (execution runtime) is featured on the site but has no entry in this index. Until it is added with a maturity label, do not cite ARO as evidence in an application brief.
+
+### audiojones.com
+
+Surface: https://audiojones.com — maturity `production`
+
+**Verified evidence:** AJ Digital LLC operates a commercial consultancy brand with defined service lines (ResponseOS, Founder Intelligence Systems, an AI readiness diagnostic, an ROI calculator) and a published engagement model. Observed 2026-08-11.
+
+**Use for:** substantiating that AJ Digital is a real operating entity with productized service lines — relevant to the consulting record in `experience/aj-digital.md`. Appropriate as context in digital-transformation and AI-operations conversations.
+
+**Excluded from:** application link packages. See `strategy/portfolio-link-strategy.md`.
+
+**Metric exclusion — binding.** The site publishes engagement-performance percentages (CAC reduction, pipeline growth, conversion rate). These are **not verified evidence** under this repository's standard and must not appear in any resume, application brief, cover letter, or interview claim. The site being self-owned does not verify the number; only a documented measurement basis does. To promote any figure, land its source, method, time window, and scope in `docs/accomplishments.md` in the resume repository first.
+
 ## Evidence Rules
 
 - Do not claim production deployment when evidence supports only design, scaffold, prototype, or pilot.
 - Do not publish unverified percentages, revenue effects, cost savings, dates, or credentials.
 - Tailor emphasis by role, but do not alter the underlying facts.
+- A claim published on a surface Tyrone controls is not thereby verified. Self-publication is not evidence; the underlying measurement is.
+- Do not cite a case study featured on a public surface until it exists in this index with a maturity label.

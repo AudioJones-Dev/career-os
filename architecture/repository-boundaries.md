@@ -53,11 +53,31 @@ Current priority sources:
 
 Each external claim must identify the supporting repository, file or artifact, and maturity state.
 
-## 4. Future Career Portfolio
+## 4. Public Web Surfaces
 
-A separate recruiter-facing portfolio may be created later. It would own presentation and navigation only, while sourcing verified content from the resume and evidence repositories.
+The recruiter-facing portfolio anticipated by earlier versions of this document **now exists and is live.** This section is corrected accordingly.
 
-Career OS must not create a new portfolio repository until the content model, privacy boundaries, and publication plan are approved.
+### tyronenelms.com
+
+The primary employer-facing portfolio. Owns presentation and navigation only; it sources verified content from the resume and evidence repositories and must not originate facts.
+
+Career OS treats it as the default portfolio link for applications and as a surface subject to the same maturity vocabulary as any evidence repository.
+
+### audiojones.com
+
+The AJ Digital LLC commercial brand surface. Owned by the consulting entity, **not** by the career system. It serves prospective clients, not employers.
+
+Career OS does not govern its content and does not link it in application packages. Performance metrics published there are outside this system's evidence chain and are barred from career artifacts.
+
+### GitHub Pages portal
+
+`site/` in Tyrone-Nelms-Resume deploys to GitHub Pages and carries no custom domain — it does not serve tyronenelms.com. Deploy status is unconfirmed and its audience overlaps tyronenelms.com. Not used in applications until that overlap is resolved.
+
+### Governance
+
+The registry of record is `docs/public-surfaces.md` in Tyrone-Nelms-Resume. Link selection is governed by `strategy/portfolio-link-strategy.md`. Career OS consumes both; it does not silently rewrite the surface registry, consistent with §1.
+
+No new portfolio repository or public surface may be created until its content model, privacy boundaries, and publication plan are approved.
 
 ## Maturity Vocabulary
 

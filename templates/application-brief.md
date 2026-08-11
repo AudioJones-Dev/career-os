@@ -70,9 +70,27 @@ Separate actual gaps from keyword or framing gaps.
 
 - Resume:
 - Cover letter:
-- Portfolio links:
 - Application questions:
 - Referral or recruiter contact:
+
+### Portfolio Links
+
+Defaults and per-role-family guidance: `strategy/portfolio-link-strategy.md`.
+
+- Portfolio (default https://tyronenelms.com):
+- GitHub (default https://github.com/AudioJones-Dev):
+- LinkedIn, if the form has a field:
+- Role family applied:
+- Evidence led with:
+- Deviation from the default package, and why:
+
+Pre-submission check:
+
+- [ ] Every link resolves and reflects current positioning
+- [ ] No linked surface carries unverified metrics — audiojones.com is excluded by default
+- [ ] Private repositories framed as "walkthrough available," not linked
+- [ ] Maturity labels match `architecture/repository-boundaries.md`
+- [ ] No claim in this package originates from a public surface rather than the canonical record
 
 ## Follow-Up
 
