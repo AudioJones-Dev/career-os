@@ -7,8 +7,12 @@ It coordinates career positioning, job sourcing, opportunity scoring, tailored a
 ## Canonical Sources
 
 - Resume and career-content source of truth: https://github.com/AudioJones-Dev/Tyrone-Nelms-Resume
+- Employer-facing portfolio: https://tyronenelms.com — default portfolio link on applications
 - LinkedIn: https://www.linkedin.com/in/audiojones
 - GitHub portfolio: https://github.com/AudioJones-Dev
+- AJ Digital commercial brand: https://audiojones.com — client-facing; **not** linked in application packages
+
+Public surfaces are registered in `docs/public-surfaces.md` in the resume repository. Link selection per role family is governed by `strategy/portfolio-link-strategy.md`.
 
 Career OS does not duplicate canonical resume content. Every tailored application must record the resume path and commit SHA used.
 
@@ -106,7 +110,8 @@ career-os/
 │   └── repository-boundaries.md
 ├── strategy/
 │   ├── search-strategy.md
-│   └── opportunity-scoring.md
+│   ├── opportunity-scoring.md
+│   └── portfolio-link-strategy.md
 ├── applications/
 │   ├── application-record.schema.json
 │   └── tracker.csv
